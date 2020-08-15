@@ -14,5 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
         //myWebView.loadUrl("http://www.example.com");
+
     }
 }
