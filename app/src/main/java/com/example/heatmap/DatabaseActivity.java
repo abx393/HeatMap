@@ -1,5 +1,6 @@
 package com.example.heatmap;
 
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,9 +13,10 @@ public class DatabaseActivity {
 
     public void UploadInfo(String MacAdress, double longitude, double latitude, String Timestamp) {
 
-        GeoPoint Coordinates = new GeoPoint(latitude,longitude);
+        //GeoPoint Coordinates = new GeoPoint(latitude,longitude);
         Map<String, Object> info = new HashMap<>();
-        info.put("lcoation",Coordinates);
+        info.put("longitude",longitude);
+        info.put("latitude",latitude);
         info.put("Time",Timestamp);
         Users.add(MacAdress);
         Users.document(MacAdress).set(info);
