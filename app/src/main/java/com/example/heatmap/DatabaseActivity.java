@@ -10,13 +10,13 @@ import java.util.*;
 public class DatabaseActivity {
     private CollectionReference Users = FirebaseFirestore.getInstance().collection("users");
 
-    public void UploadInfo(String MacAdress, double longitude, double latitude, String Timestamp) {
+    public void uploadInfo(String MacAdress, double longitude, double latitude, String Timestamp) {
 
         GeoPoint Coordinates = new GeoPoint(latitude,longitude);
         Map<String, Object> info = new HashMap<>();
         info.put("lcoation",Coordinates);
         info.put("Time",Timestamp);
-        Users.add(MacAdress);
+        //Users.add(MacAdress);
         Users.document(MacAdress).set(info);
     }
 }
