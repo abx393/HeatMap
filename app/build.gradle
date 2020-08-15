@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    classpath 'com.google.gms:google-services:4.3.3'
+    //classpath 'com.google.gms:google-services:4.3.3'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
