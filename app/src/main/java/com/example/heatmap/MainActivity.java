@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private TextView latitudeText, longitudeText;
     private boolean permissionGranted = false;
     private WebView webview;
-    private long updateInterval = 10000; //milliseconds
+    private long updateInterval = 100000; //milliseconds
 
 
     @Override
@@ -112,17 +112,14 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     public void requestLocationPermission() {
 
-        Log.d("check 2", "check 2");
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                PERMISSION_REQUEST_LOCATION);
-
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
             Log.d("check 1", "check 1");
 
         } else {
-
-
+            Log.d("check 2", "check 2");
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                    PERMISSION_REQUEST_LOCATION);
         }
     }
 

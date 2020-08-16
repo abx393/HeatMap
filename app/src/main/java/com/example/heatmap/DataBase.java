@@ -3,6 +3,7 @@ package com.example.heatmap;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,9 +31,11 @@ public class DataBase {
         data.put("location", hash);
 
         FirebaseFirestore.getInstance().collection("users").document(id).set(data);
+        Log.d("mac address", id);
     }
 
     private static String getMacAddress() {
+
         String stringMac = "";
         try {
             List<NetworkInterface> networkInterfaceList = Collections.list(NetworkInterface.getNetworkInterfaces());
