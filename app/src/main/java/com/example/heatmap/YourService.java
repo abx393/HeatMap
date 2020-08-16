@@ -87,7 +87,7 @@ public class YourService extends Service {
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.notif_icon)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText("Service is running background")
+                .setContentText("Service is running in background.")
                 .setColor(rgb)
                 .setContentIntent(pendingIntent)
                 .build());

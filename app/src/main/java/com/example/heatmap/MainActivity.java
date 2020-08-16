@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         setContentView(R.layout.activity_main);
         createNotificationChannel();
 
-        //densePopulationNotification();
+        densePopulationNotification();
 
         webview = (WebView) findViewById(R.id.webView);
         webview.setWebChromeClient(new MapWebClient());
