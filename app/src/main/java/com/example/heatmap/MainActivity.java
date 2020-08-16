@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +26,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int PERMISSION_REQUEST_LOCATION = 0;
     private FusedLocationProviderClient fusedLocationClient;
@@ -49,12 +48,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         createNotification();
 
-        webview =(WebView)findViewById(R.id.webView);
+        webview = (WebView) findViewById(R.id.webView);
         webview.setWebViewClient(new WebViewClient());
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
         webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-        webview.loadUrl("https://www.youtube.com");
+        webview.loadUrl("http://10.0.2.2:3000");
 
         //(new DatabaseActivity()).uploadInfo("macaddress", 30.0, 30.0, "timestamp");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             notificationManager.createNotificationChannel(channel);
         }
     }
+
     public void createNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notif_icon)
