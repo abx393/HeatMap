@@ -1,9 +1,19 @@
 package com.example.heatmap;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class DataBase {
     private static final int HASH_PRECISION = 9;
@@ -23,8 +33,28 @@ public class DataBase {
     }
 
     private static String getMacAddress() {
-        // TODO: actually get mac address
-        return "MAC-ADDRESS";
+        String stringMac = "";
+        try {
+            List<NetworkInterface> networkInterfaceList = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface networkInterface:networkInterfaceList){
+                if (networkInterface.getName().equalsIgnoreCase("wlan0")){
+                    for (int i=0; i<networkInterface.getHardwareAddress().length;i++){
+                        String stringMacByte = Integer.toHexString(networkInterface.getHardwareAddress()[i] & 0xFF);
+
+                        if (stringMacByte.length() == 1){
+                            stringMacByte = "0" + stringMacByte;
+                        }
+
+                        stringMac = stringMac + stringMacByte.toUpperCase() + ":";
+                    }
+                    break;
+                }
+            }
+
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return stringMac;
     }
 
     private static String geoHash(double latitude, double longitude) {
