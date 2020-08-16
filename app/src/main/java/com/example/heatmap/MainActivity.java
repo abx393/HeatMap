@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private DataBase db;
-    private TextView latitudeText, longitudeText;
+    //private TextView latitudeText, longitudeText;
     private boolean permissionGranted = false;
     private WebView webview;
     private long updateInterval = 100000; //milliseconds
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createNotificationChannel();
@@ -59,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //(new DatabaseActivity()).uploadInfo("macaddress", 30.0, 30.0, "timestamp");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        latitudeText = findViewById(R.id.latitudeText);
-        longitudeText = findViewById(R.id.longitudeText);
+        //latitudeText = findViewById(R.id.latitudeText);
+        //longitudeText = findViewById(R.id.longitudeText);
 
         locationCallback = new LocationCallback() {
             @Override
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 for (Location location : locationResult.getLocations()) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    latitudeText.setText("latitude " + latitude);
-                    longitudeText.setText("longitude " + longitude);
+                    //latitudeText.setText("latitude " + latitude);
+                    //longitudeText.setText("longitude " + longitude);
                     DataBase.logLocation(latitude, longitude);
 
                     densePopulationCheck(latitude, longitude);
@@ -132,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                         if (location != null) {
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
-                            latitudeText.setText("latitude " + latitude);
-                            longitudeText.setText("longitude " + longitude);
+                            //latitudeText.setText("latitude " + latitude);
+                            //longitudeText.setText("longitude " + longitude);
 
                             DataBase.logLocation(latitude, longitude);
                         }
