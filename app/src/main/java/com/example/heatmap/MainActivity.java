@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
         webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-        webview.loadUrl("https://www.youtube.com");
+        webview.loadUrl("https://www.google.com/maps");
 
         //(new DatabaseActivity()).uploadInfo("macaddress", 30.0, 30.0, "timestamp");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
