@@ -28,7 +28,7 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int PERMISSION_REQUEST_LOCATION = 0;
-    public static final String WEBAPP_URL = "http://10.0.2.2:3000"; // TODO: change to actual domain name
+    public static final String WEBAPP_URL = "https://hack-20.web.app/";
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
@@ -49,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         densePopulationNotification();
 
         webview = (WebView) findViewById(R.id.webView);
-        webview.setWebViewClient(new WebViewClient());
+        webview.setWebChromeClient(new MapWebClient());
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setGeolocationEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
+        webview.getSettings().setAppCacheEnabled(true);
+        webview.getSettings().setDatabaseEnabled(true);
         webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
         webview.loadUrl(WEBAPP_URL);
 
