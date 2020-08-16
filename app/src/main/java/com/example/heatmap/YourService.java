@@ -1,21 +1,16 @@
 package com.example.heatmap;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
-import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -25,36 +20,32 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private static final int PERMISSION_REQUEST_LOCATION = 0;
-    public static final String WEBAPP_URL = "https://hack-20.web.app/"; // TODO: change to actual domain name
+public class YourService extends Service {
+
+    private static final int backgroundNotifId = 1;
+    private static final String backgroundChannelId = "Channel_Id";
+
+    private long updateInterval = 100000; //milliseconds
+    private String denseChannelId = "channel_id";
+    private int denseNotifId = 0;
+
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
-    private boolean permissionGranted = false;
-    private WebView webview;
-    private long updateInterval = 100000; //milliseconds
-    private String CHANNEL_ID = "channel_id";
-    private int notificationId = 0;
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        getSupportActionBar().hide();
+    public int onStartCommand(Intent intent, int flags, int startId){
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        createNotificationChannel();
+        // do your jobs here
 
-        //densePopulationNotification();
-
-        webview = (WebView) findViewById(R.id.webView);
-        webview.setWebViewClient(new WebViewClient());
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setDomStorageEnabled(true);
-        webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-        webview.loadUrl(WEBAPP_URL);
-
+        createNotificationChannel(denseChannelId);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationCallback = new LocationCallback() {
@@ -70,13 +61,35 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 }
             }
         };
+
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(updateInterval);
+        startLocationUpdates();
 
-        requestLocationPermission();
+        startForeground();
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    private void createNotificationChannel() {
+    private void startForeground() {
+        createNotificationChannel(backgroundChannelId);
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        startForeground(backgroundNotifId, new NotificationCompat.Builder(this,
+                backgroundChannelId) // don't forget create a notification channel first
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.notif_icon)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("Service is running background")
+                .setContentIntent(pendingIntent)
+                .build());
+    }
+
+    private void createNotificationChannel(String channelId) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
 
@@ -84,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             CharSequence channelName = "channel0";
             String channelDescription = "channel_description";
             int channelImportance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, channelName, channelImportance);
+            NotificationChannel channel = new NotificationChannel("" + channelId, channelName, channelImportance);
             channel.setDescription(channelDescription);
 
             // Register the channel with the system; you can't change the importance
@@ -93,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             notificationManager.createNotificationChannel(channel);
         }
     }
-
     public void densePopulationCheck(double latitude, double longitude) {
         DataBase.getUsersInRange(latitude, longitude, 30, numUsers -> {
             if (numUsers > 30) {
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         rgb = (rgb << 8) + 46;
         rgb = (rgb << 8) + 131;
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, denseChannelId)
                 .setSmallIcon(R.drawable.notif_icon)
                 .setContentTitle("Densely populated area!")
                 .setContentText("Lots of people around you! Please wear your mask.")
@@ -117,37 +129,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-        notificationManager.notify(notificationId, builder.build());
-        notificationId++;
+        notificationManager.notify(denseNotifId, builder.build());
+        denseNotifId++;
     }
 
     public void startLocationUpdates() {
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_LOCATION) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("Yay", "Permission granted.");
-                permissionGranted = true;
-                startLocationUpdates();
-            } else {
-                permissionGranted = false;
-                Log.d("grantResults[0] " + grantResults[0], "PackageManager.PERMISSION_GRANTED" + PackageManager.PERMISSION_GRANTED);
-                Log.d("Darn", "Permission denied.");
-            }
-        }
-    }
-
-    public void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            Log.d("check 1", "check 1");
-        } else {
-            Log.d("check 2", "check 2");
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                    PERMISSION_REQUEST_LOCATION);
-        }
     }
 }
