@@ -72,6 +72,9 @@ public class YourService extends Service {
     }
 
     private void startForeground() {
+        int rgb = 75;
+        rgb = (rgb << 8) + 46;
+        rgb = (rgb << 8) + 131;
         createNotificationChannel(backgroundChannelId);
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -85,6 +88,7 @@ public class YourService extends Service {
                 .setSmallIcon(R.drawable.notif_icon)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Service is running background")
+                .setColor(rgb)
                 .setContentIntent(pendingIntent)
                 .build());
     }
