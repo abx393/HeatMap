@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -102,11 +103,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     public void densePopulationNotification() {
+        int rgb = 75;
+        rgb = (rgb << 8) + 46;
+        rgb = (rgb << 8) + 131;
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notif_icon)
                 .setContentTitle("Densely populated area!")
                 .setContentText("Lots of people around you! Please wear your mask.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setColor(rgb)
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
