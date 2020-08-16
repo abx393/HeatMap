@@ -70,19 +70,19 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             } else {
                 permissionGranted = false;
                 Log.d("grantResults[0] " + grantResults[0], "PackageManager.PERMISSION_GRANTED" + PackageManager.PERMISSION_GRANTED);
-                Log.d("Fuck", "Permission denied.");
+                Log.d("Darn", "Permission denied.");
             }
         }
     }
 
     public void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
             Log.d("check 1", "check 1");
 
         } else {
             Log.d("check 2", "check 2");
             ActivityCompat.requestPermissions(MainActivity.this,
-                                                new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                                                new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION},
                                                 PERMISSION_REQUEST_LOCATION);
 
         }
