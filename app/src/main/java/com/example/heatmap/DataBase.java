@@ -1,39 +1,33 @@
 package com.example.heatmap;
 
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DatabaseActivity {
+public class DataBase {
     private static final int HASH_PRECISION = 9;
 
-    private final CollectionReference users;
-
-    public DatabaseActivity() {
-        users = FirebaseFirestore.getInstance().collection("users");
-    }
-
-    public void logLocation(double latitude, double longitude) {
+    public static void logLocation(double latitude, double longitude) {
         double timestamp = System.currentTimeMillis(); // TODO: replace with call to NTP server
         String id = getMacAddress();
         String hash = geoHash(latitude, longitude);
 
-        Map<String,Object> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("timestamp", timestamp);
         data.put("latitude", latitude);
         data.put("longitude", longitude);
         data.put("location", hash);
 
-        users.document(id).set(data);
+        FirebaseFirestore.getInstance().collection("users").document(id).set(data);
     }
 
-    private String getMacAddress() {
+    private static String getMacAddress() {
         // TODO: actually get mac address
         return "MAC-ADDRESS";
     }
 
-    private String geoHash(double latitude, double longitude) {
+    private static String geoHash(double latitude, double longitude) {
         // Reference: https://github.com/chrisveness/latlon-geohash/blob/master/latlon-geohash.js
         final String base32 = "0123456789bcdefghjkmnpqrstuvwxyz";
         int idx = 0;
