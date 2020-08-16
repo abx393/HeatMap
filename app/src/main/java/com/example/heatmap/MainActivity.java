@@ -1,18 +1,18 @@
 package com.example.heatmap;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-import com.example.heatmap.DataBase;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,14 +24,21 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private DataBase db;
     private TextView latitudeText, longitudeText;
     private boolean permissionGranted = false;
+    private WebView webview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //WebView myWebView = (WebView) findViewById(R.id.webview);
-        //myWebView.loadUrl("http://www.example.com");
+        webview =(WebView)findViewById(R.id.webView);
+
+        webview.setWebViewClient(new WebViewClient());
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setDomStorageEnabled(true);
+        webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+        webview.loadUrl("https://www.youtube.com");
+
 
         requestLocationPermission();
         //(new DatabaseActivity()).uploadInfo("macaddress", 30.0, 30.0, "timestamp");
