@@ -49,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         //densePopulationNotification();
 
         webview = (WebView) findViewById(R.id.webView);
-        webview.setWebViewClient(new WebViewClient());
+        webview.setWebChromeClient(new MapWebClient());
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setGeolocationEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
+        webview.getSettings().setAppCacheEnabled(true);
+        webview.getSettings().setDatabaseEnabled(true);
         webview.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
         webview.loadUrl(WEBAPP_URL);
 
