@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         setContentView(R.layout.activity_main);
         createNotificationChannel();
 
-        createNotification();
+        densePopulationNotification();
 
         webview =(WebView)findViewById(R.id.webView);
         webview.setWebViewClient(new WebViewClient());
@@ -72,7 +72,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     latitudeText.setText("latitude " + latitude);
                     longitudeText.setText("longitude " + longitude);
                     DataBase.logLocation(latitude, longitude);
+
+                    densePopulationCheck(latitude, longitude);
                 }
+
+
             }
         };
         locationRequest = LocationRequest.create();
@@ -98,7 +102,15 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             notificationManager.createNotificationChannel(channel);
         }
     }
-    public void createNotification() {
+    public void densePopulationCheck(double latitude, double longitude) {
+        DataBase.getUsersInRange(latitude, longitude, 30, numUsers -> {
+            if (numUsers > 30) {
+                densePopulationNotification();
+            }
+        });
+    }
+
+    public void densePopulationNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notif_icon)
                 .setContentTitle("Densely populated area!")
