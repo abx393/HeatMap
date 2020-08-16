@@ -28,7 +28,7 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int PERMISSION_REQUEST_LOCATION = 0;
-    public static final String WEBAPP_URL = "https://hack-20.web.app/"; // TODO: change to actual domain name
+    public static final String WEBAPP_URL = "https://hack-20.web.app/";
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
