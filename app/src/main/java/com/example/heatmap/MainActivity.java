@@ -12,7 +12,7 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.example.heatmap.DatabaseActivity;
+import com.example.heatmap.DataBase;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     private static final int PERMISSION_REQUEST_LOCATION = 0;
     private FusedLocationProviderClient fusedLocationClient;
-    private DatabaseActivity db;
+    private DataBase db;
     private TextView latitudeText, longitudeText;
     private boolean permissionGranted = false;
 
@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                             double longitude = location.getLongitude();
                             latitudeText.setText("latitude " + latitude);
                             longitudeText.setText("longitude " + longitude);
-                            db = new DatabaseActivity();
-                            db.logLocation(latitude, longitude);
+
+                            DataBase.logLocation(latitude, longitude);
                         }
                     }
                 });
