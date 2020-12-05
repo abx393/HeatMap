@@ -12,7 +12,7 @@ gatherings.
 
 Check out the [web app repository](https://github.com/abhaybd/Hack20-Webapp)
 and the [integrated repository](https://github.com/abhaybd/DawgMaps) with the
-latest versions of the native app or web app. Any further development will ocurr in
+latest versions of both the native app and web app. Any further development will ocurr in
 the latter repository.
 
 This project was submitted to the Hack-20 hackathon on August 15-16, 2020.
